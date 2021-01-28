@@ -4,126 +4,140 @@
 #include <QTimer>
 #include "ui_mainwindow.h"
 
-/*      Notice
-    Create new label and new button
-    Set label at "ignored" mode of "sizePolicy" setting.
-    Tick on "scaleContents"
+/*
+* Chuong trinh toi uu hoa khi quit van khong bi treo
+* Ho tro open by id (number) va bang stream link (string)
+* Khi stream bang link, thong thuong khong the set fps
 */
 
 using namespace cv;
 using namespace std;
-std::string videoStreamAddress;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setAttribute(Qt::WA_DeleteOnClose);
 
-//    cap = new VideoCapture();
+    //tao 1 cap moi
+    cap = new VideoCapture();
 
-    videoStreamAddress = "udp://@192.168.0.48:1234"; //http://192.168.0.42:8080/?action=stream"; //"http://192.168.0.42:8080/?action=stream"; //"udp://@:1234"; // "C:/Users/Hino_Thanh/Desktop/winftp/mjpeg_video.avi" //h264_video.264"; //"http://192.168.0.42:8080/?action=stream";
+    //set time loop cho Process
+    Timer_process = new QTimer(this);
+    connect(Timer_process,SIGNAL(timeout()),this, SLOT(Process()));
+    Timer_process->start(0);
 
-//    cap.open(videoStreamAddress, CAP_FFMPEG);
-//    cap.open(0);
-    camera_source.source_link = "http://192.168.0.42:8080/?action=stream";
-
-//    cap.set(CAP_PROP_FRAME_WIDTH, 512);
-//    cap.set(CAP_PROP_FRAME_HEIGHT, 288);
-
-//    Timer_process = new QTimer(this);
-//    connect(Timer_process,SIGNAL(timeout()),this, SLOT(Process()));
-//    Timer_process->start(0);
-
-    OpenCamera = true;
+    //set time loop cho open cam
+    Timer_get_cam = new QTimer(this);
+    connect(Timer_get_cam,SIGNAL(timeout()),this, SLOT(Open_cam()));
 
 
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
-//    destroyAllWindows();
-
-//    cap.release();
-//    cap.~VideoCapture();
+//    Reset_Camera();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
 
-//    if(Timer_process->isActive()) {
-//        Timer_process->stop();
-//        cout << "XXXXXXXXXX" << endl;
-//    }
-
-//    cap.release();
-//    cap.~VideoCapture();
-
-    cout << "EXIT" << endl;
-}
 
 //Ham xu ly chinh. Get every frame depend on Timer_process
-int frame_count = 0;
+//#########################################################################
+int time_check_camera = 500; // milisecond
 void MainWindow::Process(){
-    if(OpenCamera==false) return;
-
-
-    return;
     Mat image;
 
     if(GetCamera(image)==false) {
 
-        ui->label->setText("     No Camera");
+        ui->label_screen->setText("     No Camera");
 
-        if(dem_time==0) {
-            timer_check.start();
-            dem_time = 1;
-        }
+        if(Timer_get_cam->isActive()==true) return;
+        else Timer_get_cam->start(time_check_camera);
 
-        // check camera every 0.5s
-        int gettime_for_camera_check = timer_check.elapsed();
-
-        if((gettime_for_camera_check>500)) {
-            cap.release();
-            cap.~VideoCapture();
-
-    //        cap = new VideoCapture();
-
-            open_cam_source(cap);
-            dem_time = 0;
-        }
         return;
-        //if(!Check_cam->isActive()) Check_cam->start(500);
     }
+    else {
+        if(Timer_get_cam->isActive()==true) Timer_get_cam->stop();
+    }
+//    cout << "have data" << endl;
 
-     cout << "have data" << endl;
+    //Pause
+    if(Camera_Pause==false) mat_image_for_pause = image.clone();
+    image = mat_image_for_pause.clone();
 
-    frame_count++;
-    ui->label_3->setText("Frame : " + QString::number(frame_count));
 
-    ui->label_2->setText(QString::number(size_wid) + " x " + QString::number(size_hei));
-    if(image.empty()) {ui->label->setText("    No Camera");return;}//camera not work
+    if(image.empty()) {
+        ui->label_screen->setText("    No Camera");
+        return;
+    }//camera not work
 
+    //Update Camera size
+    ui->label_Resolution->setText(QString::number(size_wid) + " x " + QString::number(size_hei));
+
+    //Frame count
+    if(FRAME_COUNT_CHECK==true)
+    {
+        //frame rate
+        fps_count++;
+
+        if(fps_count==100)
+        {
+            double time_total = timer_fps_check.elapsed();
+            double frame_rate = fps_count*1000/(time_total);
+
+            ui->label_framerate->setText(QString::number(frame_rate));
+
+            fps_count = 0;
+            timer_fps_check.start();
+        }
+    }
 
     Display(image);
 }
 
+//#########################################################################
+
+
+
 // Ham ho tro hien thi
 //#########################################################################
-void MainWindow::open_cam_source(VideoCapture cap){
+void MainWindow::Open_cam(){
+    cout << "check camera" << endl;
+
+    //neu open bang link thi khong can phai mo lai lam gi. Se khien chuong trinh bi treo
+    if((camera_source.type==type_camera_source_string)&&(camera_source.check_lock==true)) {
+
+        ui->label_screen->setText("     Please check camera source link again!");
+        Timer_get_cam->stop();
+        return;
+    }
+
+    Reset_Camera();
+    open_cam_source(cap);
+
+    if(camera_source.type==type_camera_source_string) camera_source.check_lock = true; // neu la string thi chi can check 1 lan thoi
+}
+void MainWindow::Reset_Camera()
+{
+    cap->release();
+    cap->~VideoCapture();
+//    cap = new VideoCapture();
+}
+//Luu y la khi open cac link stream -> neu link khon dung se dan den corrupt. Viec open thuong se rat lau
+//Cach khac phuc -> tu build lai opencv ffmpeg from github  -> https://www.google.com/search?sxsrf=ALeKk02UqOCyAHCiBSRO31vwNevqIHHNkQ%3A1611039560909&ei=SIMGYOqJN8GsoATX7YKIDA&q=OpenCV+VideoCapture+timeout+http+rtsp&oq=OpenCV+VideoCapture+timeout+http+rtsp&gs_lcp=CgZwc3ktYWIQAzIICCEQFhAdEB46BggjECcQEzoGCAAQFhAeOgQIABATOggIABAWEB4QEzoFCCEQoAE6BwghEAoQoAFQzi5YlTxgnT9oAHAAeAGAAZ8DiAGFD5IBBzAuOS40LTGYAQCgAQGqAQdnd3Mtd2l6wAEB&sclient=psy-ab&ved=0ahUKEwjqzfyFtqfuAhVBFogKHde2AMEQ4dUDCA0&uact=5
+void MainWindow::open_cam_source(VideoCapture *cap){
     if(camera_source.type==type_camera_source_number) {
-        cap.open(camera_source.source_number);
+        cap->open(camera_source.source_number);
     }
     else if(camera_source.type==type_camera_source_string) {
-        cap.open(camera_source.source_link);
+        cap->open(camera_source.source_link);
     }
 }
 bool MainWindow::GetCamera(Mat &image)
 {
     image.release();
 
-     cap.read(image);
-//    cap.operator >>(image);
+     cap->read(image);
+//    cap->operator >>(image);
     if (image.empty()) return false;
 
     size_wid = image.cols;
@@ -139,12 +153,12 @@ void MainWindow::Display(Mat image)
     if(resize == true){
     int x, y;
     // convert gia tri
-    if((size_hei*ui->label->width())>(size_wid*ui->label->height())){
-        y = ui->label->height();
+    if((size_hei*ui->label_screen->width())>(size_wid*ui->label_screen->height())){
+        y = ui->label_screen->height();
         x = y*size_wid/size_hei;
     }
     else{
-        x = ui->label->width();
+        x = ui->label_screen->width();
         y = x*size_hei/size_wid;
     }
 
@@ -152,7 +166,7 @@ void MainWindow::Display(Mat image)
     }
 
     QPixmap p = Mat2QPixmap(image);
-    ui->label->setPixmap(p);
+    ui->label_screen->setPixmap(p);
 }
 QPixmap MainWindow::Mat2QPixmap(cv::Mat const& _frame)
 {
@@ -183,10 +197,8 @@ QPixmap MainWindow::Mat2QPixmap(cv::Mat const& _frame)
 
 
 
-
-
-
 //Chi thay doi mau sac va test
+//#########################################################################
 void Button_change_color_state(QPushButton *button, bool state, QString text_change_true, QString text_change_false){
     if(state==true) {
         if(text_change_true.length()!=0) button->setText(text_change_true);
@@ -205,16 +217,17 @@ void Button_change_color_state(QPushButton *button, bool state){
         button->setStyleSheet("background-color: rgb(200,200,200)");
     }
 }
+//#########################################################################
 
 
+
+//Cac nut nhan button
+//#########################################################################
 void MainWindow::on_pushButton_Open_clicked()
 {
     QString camera_source_tmp = ui->lineEdit_camera_source->text();
-
-    cout << camera_source_tmp.toUtf8().constData() << endl;
-
+    //check xem la number hay la link
     bool camera_source_is_number = true;
-
     for(int i= 0; i< camera_source_tmp.length(); i++){
         int kq = isdigit(camera_source_tmp.toUtf8().constData()[i]);
         if(kq==0) {
@@ -233,6 +246,13 @@ void MainWindow::on_pushButton_Open_clicked()
         camera_source.source_link = ui->lineEdit_camera_source->text().toUtf8().constData();
         cout << "camera source is string " << camera_source.source_link << endl;
     }
+
+
+    //release
+    Reset_Camera();
+
+    //unlock check
+    camera_source.check_lock = false;
 }
 
 void MainWindow::on_pushButton_Pause_clicked()
@@ -240,3 +260,21 @@ void MainWindow::on_pushButton_Pause_clicked()
     Camera_Pause = !Camera_Pause;
     Button_change_color_state(ui->pushButton_Pause, Camera_Pause);
 }
+
+void MainWindow::on_pushButton_Frame_clicked()
+{
+    FRAME_COUNT_CHECK = !FRAME_COUNT_CHECK;
+    Button_change_color_state(ui->pushButton_Frame, FRAME_COUNT_CHECK);
+
+    timer_fps_check.start();
+    fps_count = 0;
+}
+
+void MainWindow::on_pushButton_Res_clicked()
+{
+    Reset_Camera();
+    open_cam_source(cap);
+    cap->set(CAP_PROP_FRAME_WIDTH, ui->lineEdit_camera_width->text().toInt());
+    cap->set(CAP_PROP_FRAME_HEIGHT, ui->lineEdit_camera_height->text().toInt());
+}
+//#########################################################################

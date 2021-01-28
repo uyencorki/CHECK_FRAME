@@ -6,8 +6,6 @@
 #include <QTime>
 #include <QElapsedTimer>
 
-#include <QCloseEvent>
-
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -29,16 +27,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void closeEvent(QCloseEvent *event);
 
 private:
 
-    QTimer *Timer_process;
+    QTimer *Timer_process, *Timer_get_cam;
     QElapsedTimer timer_check;
 
     Ui::MainWindow *ui;
 
-    VideoCapture cap;
+    VideoCapture *cap;
     enum camera_source_type_df{
         type_camera_source_number,
         type_camera_source_string,
@@ -49,8 +46,10 @@ private:
 
         int source_number = 0;
         string source_link = "";
+
+        bool check_lock = false;
     }camera_source;
-    void open_cam_source(VideoCapture cap);
+    void open_cam_source(VideoCapture *cap);
 
 
     int dem_time;
@@ -61,20 +60,26 @@ private:
     int size_wid, size_hei;
 
 
-    bool OpenCamera;
+    //FPS
+    bool FRAME_COUNT_CHECK = false;
+    QElapsedTimer timer_fps_check;
+    int fps_count = 0;
 
 public slots:
     void Process();
-    void Display(Mat image);
-    bool GetCamera(Mat &image);
-//    bool GetCameraxx(Mat &image);
+    void Open_cam();
 
 protected:
- static   QPixmap Mat2QPixmap(cv::Mat const& _frame);
+    void Reset_Camera();
+    void Display(Mat image);
+    bool GetCamera(Mat &image);
+    static   QPixmap Mat2QPixmap(cv::Mat const& _frame);
 
 private slots:
- void on_pushButton_Open_clicked();
- void on_pushButton_Pause_clicked();
+    void on_pushButton_Open_clicked();
+    void on_pushButton_Pause_clicked();
+    void on_pushButton_Frame_clicked();
+    void on_pushButton_Res_clicked();
 };
 
 #endif // MAINWINDOW_H
