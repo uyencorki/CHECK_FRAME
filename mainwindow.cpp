@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-//    Reset_Camera();
+    if(cap->isOpened()) Reset_Camera();
 }
 
 
