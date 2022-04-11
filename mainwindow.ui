@@ -6,41 +6,87 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1104</width>
-    <height>671</height>
+    <width>1169</width>
+    <height>828</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>HIEC_UVC_CAM</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>favicon.ico</normaloff>favicon.ico</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_screen">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>20</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QWidget" name="widget" native="true">
+        <widget class="QLabel" name="label_screen">
+         <property name="geometry">
+          <rect>
+           <x>1</x>
+           <y>1</y>
+           <width>861</width>
+           <height>641</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>670</y>
+           <width>771</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>780</x>
+           <y>690</y>
+           <width>31</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </widget>
       </item>
       <item>
        <widget class="QFrame" name="verticalFrame_2">
@@ -53,34 +99,16 @@
           <height>16777215</height>
          </size>
         </property>
-        <widget class="QPushButton" name="pushButton_Open">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>91</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(200,200,200)</string>
-         </property>
-         <property name="text">
-          <string>Open</string>
-         </property>
-        </widget>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <widget class="QLabel" name="label_Resolution">
          <property name="geometry">
           <rect>
            <x>130</x>
-           <y>200</y>
+           <y>220</y>
            <width>161</width>
            <height>41</height>
           </rect>
@@ -94,11 +122,135 @@
           <string>Resolution</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_Frame">
+        <widget class="QLabel" name="label_Resolution_2">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>260</y>
+           <y>220</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>15</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Resolution</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="Capture">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>110</y>
+           <width>91</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Capture</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="ReOpen_cam">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>60</y>
+           <width>91</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Reopen</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>270</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Fps</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="cam_fps">
+         <property name="geometry">
+          <rect>
+           <x>130</x>
+           <y>270</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>30</string>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>410</y>
+           <width>211</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <property name="plainText">
+          <string>kantool_video.264</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="Check_video">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>520</y>
+           <width>121</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Check_Video</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>310</y>
            <width>91</width>
            <height>41</height>
           </rect>
@@ -110,147 +262,97 @@
            <bold>true</bold>
           </font>
          </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(200,200,200)</string>
-         </property>
          <property name="text">
-          <string>Frame</string>
+          <string>Checking</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_framerate">
+        <widget class="QLabel" name="label_3">
          <property name="geometry">
           <rect>
-           <x>130</x>
-           <y>260</y>
-           <width>161</width>
-           <height>41</height>
+           <x>140</x>
+           <y>315</y>
+           <width>151</width>
+           <height>31</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
          <property name="text">
-          <string>fps</string>
+          <string>video</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_camera_source">
+        <widget class="QLabel" name="label_4">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>281</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>udp://@192.168.0.48:1234</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_camera_width">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>150</y>
-           <width>71</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>1920</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_camera_height">
-         <property name="geometry">
-          <rect>
-           <x>220</x>
-           <y>150</y>
-           <width>71</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>1080</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="pushButton_Pause">
-         <property name="geometry">
-          <rect>
-           <x>170</x>
-           <y>20</y>
+           <x>20</x>
+           <y>360</y>
            <width>91</width>
-           <height>41</height>
+           <height>31</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>16</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(200,200,200)</string>
-         </property>
          <property name="text">
-          <string>Pause</string>
+          <string>FRAME_CNT</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_Res">
+        <widget class="QLabel" name="frm_nuber">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>360</y>
+           <width>131</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>frm_number</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="UVC_CAM">
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>150</y>
+           <y>190</y>
            <width>91</width>
-           <height>41</height>
+           <height>16</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>16</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(200,200,200)</string>
-         </property>
          <property name="text">
-          <string>Res_set</string>
+          <string>UVC_CAM</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
         </widget>
-        <widget class="QLabel" name="label_Resolution_2">
+        <widget class="QCheckBox" name="VIDEO_FILE">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>200</y>
-           <width>91</width>
-           <height>41</height>
+           <x>120</x>
+           <y>190</y>
+           <width>111</width>
+           <height>16</height>
           </rect>
          </property>
          <property name="font">
           <font>
-           <pointsize>15</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
          </property>
          <property name="text">
-          <string> Res_get</string>
+          <string>VIDEO_FILE</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
@@ -264,7 +366,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1104</width>
+     <width>1169</width>
      <height>21</height>
     </rect>
    </property>

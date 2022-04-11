@@ -22,6 +22,9 @@ SOURCES += \
 HEADERS += \
     mainwindow.h
 
+RESOURCES += \
+    qtresourceexample.qrc
+
 FORMS += \
     mainwindow.ui
 
@@ -34,13 +37,28 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-INCLUDEPATH += C:\opencv-3.2.0\release\install\include
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_core320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_highgui320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_imgproc320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_calib3d320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_imgcodecs320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_objdetect320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_videoio320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_ml320.dll
-LIBS += C:\opencv-3.2.0\release\bin\libopencv_stitching320.dll
+#INCLUDEPATH += C:\opencv-3.2.0\release\install\include
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_core320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_highgui320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_imgproc320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_calib3d320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_imgcodecs320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_objdetect320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_videoio320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_ml320.dll
+#LIBS += C:\opencv-3.2.0\release\bin\libopencv_stitching320.dll
+
+
+
+INCLUDEPATH += C:\OpenCV\opencv\release\install\include
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_core320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_highgui320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_imgproc320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_calib3d320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_imgcodecs320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_objdetect320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_videoio320.dll
+LIBS += C:\OpenCV\opencv\release\bin\libopencv_ml320.dll
+
+RESOURCES += \
+    qtresourceexample.qrc

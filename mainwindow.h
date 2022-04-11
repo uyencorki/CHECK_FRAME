@@ -61,7 +61,7 @@ private:
 
 
     //FPS
-    bool FRAME_COUNT_CHECK = false;
+    bool FRAME_COUNT_CHECK = true;
     QElapsedTimer timer_fps_check;
     int fps_count = 0;
 
@@ -76,10 +76,17 @@ protected:
     static   QPixmap Mat2QPixmap(cv::Mat const& _frame);
 
 private slots:
-    void on_pushButton_Open_clicked();
-    void on_pushButton_Pause_clicked();
-    void on_pushButton_Frame_clicked();
-    void on_pushButton_Res_clicked();
+//    void on_pushButton_Open_clicked();
+//    void on_pushButton_Pause_clicked();
+//    void on_pushButton_Frame_clicked();
+//    void on_pushButton_Res_clicked();
+    void on_Capture_clicked();
+    void on_ReOpen_cam_clicked();
+    void on_Record_video_clicked();
+    void on_Check_video_clicked();
+    void on_VIDEO_FILE_stateChanged(int arg1);
+    void on_UVC_CAM_stateChanged(int arg1);
+    void on_horizontalSlider_actionTriggered(int action);
 };
 
 #endif // MAINWINDOW_H
